@@ -18,8 +18,14 @@ function handleInput(oninput) {
   let temp = elem.value;
   temp = reverseNum(temp);
 
+  //Stand in for CSS
+  divElem.style.color = "black";
+
   if (temp === elem.value) {
     divElem.textContent = "Yes. This is a palindrome!";
+
+    //Stand in for CSS
+    divElem.style.color = "orange";
   } else {
     divElem.textContent = "No. Try again.";
   }
