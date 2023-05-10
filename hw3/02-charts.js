@@ -35,21 +35,102 @@ const fetchData = async (url) => {
     const data = await response.json();
 
     //Array for renderChart, holds a given house and number of people in it.
-    const groups = [];
+    let groups = [];
     let i = 0;
 
-    //1. Get an array of all houses (get an array of all unique items from data by family)
+    //Get an array of all houses (get an array of all unique items from data by family)
     //From: https://plainenglish.io/blog/how-to-get-distinct-values-from-an-array-of-objects-in-javascript
     const unique = [...new Set(data.map((elem) => elem.family))];
 
     for (item of unique) {
-      //2. Filter data by house for each house and get count. (filter data by each item in unique)
-      let matches = data.filter(elem => elem.family === item);
+      //Filter data by house for each house and get count. (filter data by each item in unique)
+      const matches = data.filter(elem => elem.family === item);
 
       //Update array for renderChart
       groups[i] = {house: item, count: matches.length};
       i++;
     }
+
+    //Clean Data - special case rules to assemble 6 of the houses
+    //from: https://www.w3schools.com/js/js_array_methods.asp
+    let toAppend = [];
+    toAppend[0] = {house: "Stark", count: 0};
+    toAppend[1] = {house: "Baratheon", count: 0};
+    toAppend[2] = {house: "Lannister", count: 0};
+    toAppend[3] = {house: "Greyjoy", count: 0};
+    toAppend[4] = {house: "Unknown", count: 0};
+    toAppend[5] = {house: "Tyrell", count: 0};
+    toAppend[6] = {house: "Lorath", count: 0};
+    toAppend[7] = {house: "Targaryen", count: 0};
+
+    for (let j = 0; j < groups.length; j++) {
+    //1. Stark 
+      //check for Stark subtring. From: https://sentry.io/answers/string-contains-substring-javascript/
+      //add count to new entries
+      if (groups[j].house.includes("Stark")) {
+        console.log(groups[j].count);
+        toAppend[0].count += groups[j].count;
+        console.log(toAppend[0]);
+        delete(groups[j]);
+      }
+    //2. Baratheon
+      else if (groups[j].house.includes("Baratheon")) {
+        console.log(groups[j].count);
+        toAppend[1].count += groups[j].count;
+        console.log(toAppend[1]);
+        delete(groups[j]);
+      }
+    //3. Lannister
+      else if (groups[j].house.includes("Lan")) {
+        console.log(groups[j].count);
+        toAppend[2].count += groups[j].count;
+        console.log(toAppend[2]);
+        delete(groups[j]);
+      }
+    //4. Greyjoy
+      else if (groups[j].house.includes("Greyjoy")) {
+        console.log(groups[j].count);
+        toAppend[3].count += groups[j].count;
+        console.log(toAppend[3]);
+        delete(groups[j]);
+      }
+    //5. Unknown
+      else if (groups[j].house.includes("Unknown") || 
+                groups[j].house.includes("None") || 
+                groups[j].house.includes("Unkown") || 
+                groups[j].house === "") {
+        console.log(groups[j].count);
+        toAppend[4].count += groups[j].count;
+        console.log(toAppend[4]);
+        delete(groups[j]);
+      }
+    //6. Tyrell
+      else if (groups[j].house.includes("Tyrell")) {
+        console.log(groups[j].count);
+        toAppend[5].count += groups[j].count;
+        console.log(toAppend[5]);
+        delete(groups[j]);
+      }
+    //7. Lorath
+      else if (groups[j].house.includes("Lorath")) {
+        console.log(groups[j].count);
+        toAppend[6].count += groups[j].count;
+        console.log(toAppend[6]);
+        delete(groups[j]);
+      }
+    //8. Targaryen
+      else if (groups[j].house.includes("Targar")) {
+        console.log(groups[j].count);
+        toAppend[7].count += groups[j].count;
+        console.log(toAppend[7]);
+        delete(groups[j]);
+      }
+    }
+
+    groups = groups.filter(elem => elem != undefined)
+    groups = groups.concat(toAppend);
+
+    console.log(groups);
 
     return groups;
   } catch (error) {
@@ -91,4 +172,3 @@ const renderChart = async () => {
 };
 
 renderChart();
-
