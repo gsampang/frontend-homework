@@ -13,26 +13,27 @@ const fetchData = (url) => {
 
             //Once all data has been fetched, append to container and format
             //then append container to the DOM
-            let container = document.createElement("div");
-            container.className = "container";
-
             for (elem of data) {
-                let figureElement = document.createElement("figure");
-                figureElement.className = "figure";
+                let container = document.createElement("div");
+                container.className = "container";
 
                 let imgElement = document.createElement("img");
-                imgElement.src = elem.imageUrl;;
+                imgElement.src = elem.imageUrl;
                 imgElement.alt = elem.fullName;
-                figureElement.appendChild(imgElement);
+                container.appendChild(imgElement);
 
-                let figcaptionElement = document.createElement("figcaption");
-                figcaptionElement.textContent = elem.fullName;
-                figureElement.appendChild(figcaptionElement);
+                let nameElement = document.createElement("p");
+                nameElement.className = "fullName"
+                nameElement.textContent = elem.fullName;
+                container.appendChild(nameElement);
 
-                container.appendChild(figureElement);
-                app.append(container);
+                let titleElement = document.createElement("p");
+                titleElement.className = "title";
+                titleElement.textContent = elem.title;
+                container.appendChild(titleElement);
+
+                app.append(container);                
             }
-            
         })
         .catch((error) => console.error(error))
         .finally(() => console.log("Finally block, runs regardsless. Fill in"));
